@@ -5,4 +5,4 @@
  * PRODUCTION: set to your Render backend URL
  *             e.g. 'https://forecastiq-backend.onrender.com'
  */
-window.BACKEND_URL = '';
+window.BACKEND_URL = 'https://forcastiq-backend.onrender.com';
