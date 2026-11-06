@@ -730,8 +730,8 @@ function setForecastChartMessage(message, detail = '') {
   const prev = area.querySelector('.forecast-empty-state');
   if (prev) prev.remove();
   const html = `<div class="forecast-empty-state" style="min-height:220px;display:flex;align-items:center;justify-content:center;flex-direction:column;border:1px dashed rgba(148,163,184,0.55);border-radius:12px;background:rgba(15,23,42,0.02);color:var(--text-muted);padding:24px;text-align:center;">
-     const box = document.getElementById('forecastResultBox');
-    ${detail ? `<span style="font-size:0.78rem;line-height:1.5;max-width:560px">${detail}</span>` : ''}
+    <strong>${escapeHtml(message)}</strong>
+    ${detail ? `<span style="font-size:0.78rem;line-height:1.5;max-width:560px">${escapeHtml(detail)}</span>` : ''}
   </div>`;
   area.insertAdjacentHTML('beforeend', html);
 }
@@ -3609,7 +3609,11 @@ document.addEventListener('DOMContentLoaded', () => {
           ${contribHtml}`;
       }
 
-      buildForecastPageChart(data.predicted_demand, data.prediction_interval);
+      buildForecastPageChart({
+        predicted: data.predicted_demand,
+        interval: data.prediction_interval,
+        history: rows,
+      });
       showToast(`✓ Model predicts ${fmtNum(data.predicted_demand)} units demand`);
 
     } catch (err) {

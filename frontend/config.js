@@ -5,4 +5,5 @@
  * PRODUCTION: set to your Render backend URL
  *             e.g. 'https://forecastiq-backend.onrender.com'
  */
-window.BACKEND_URL = 'https://forcastiq-backend.onrender.com';
+const isLocalFrontend = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+window.BACKEND_URL = isLocalFrontend ? '' : 'https://forcastiq-backend.onrender.com';

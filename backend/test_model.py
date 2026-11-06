@@ -4,6 +4,13 @@ tests = [
     ("compare",  {"mode": "compare"}),
     ("explain",  {"mode": "explain", "sales": 580, "inventory": 1000, "price": 85000, "month": 9, "lead_time": 14}),
     ("quality",  {"mode": "quality"}),
+    ("batch",    {
+        "mode": "batch",
+        "items": [
+            {"sales": 580, "inventory": 1000, "price": 85000, "month": 9, "lead_time": 14},
+            {"sales": 650, "inventory": 800, "price": 2600, "month": 10, "lead_time": 5},
+        ],
+    }),
     ("scenario", {
         "mode": "scenario",
         "sales": 580, "inventory": 1000, "price": 85000, "month": 9, "lead_time": 14,
@@ -16,6 +23,8 @@ tests = [
 ]
 
 all_pass = True
+batch_forecasts = None
+full_forecast = None
 for name, inp in tests:
     r = subprocess.run(
         ["py", "rf_model.py", json.dumps(inp)],
@@ -32,9 +41,23 @@ for name, inp in tests:
     if "error" in parsed:
         print(f"FAIL {name}: {parsed['error']}")
         all_pass = False
+    elif name == "batch" and (
+        len(parsed.get("forecasts", [])) != 2
+        or any("predicted_demand" not in forecast for forecast in parsed["forecasts"])
+    ):
+        print("FAIL batch: expected two complete forecast results")
+        all_pass = False
     else:
+        if name == "batch":
+            batch_forecasts = parsed["forecasts"]
+        elif name == "full":
+            full_forecast = parsed
         keys = list(parsed.keys())[:5]
         print(f"OK   {name}: {keys}")
+
+if batch_forecasts and full_forecast and batch_forecasts[0]["predicted_demand"] != full_forecast["predicted_demand"]:
+    print("FAIL batch: first result differs from the equivalent full forecast")
+    all_pass = False
 
 # Print detailed compare output
 print("\n--- COMPARE DETAIL ---")

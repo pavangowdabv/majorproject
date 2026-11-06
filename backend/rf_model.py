@@ -24,6 +24,21 @@ import hashlib
 import warnings
 warnings.filterwarnings('ignore')
 
+if len(sys.argv) < 2:
+    print(json.dumps({"error": "No input provided"}))
+    sys.exit(1)
+
+try:
+    inp = json.loads(sys.argv[1])
+except Exception:
+    print(json.dumps({"error": "Invalid JSON input"}))
+    sys.exit(1)
+
+mode = inp.get("mode", "forecast")
+if mode == "health":
+    print(json.dumps({"status": "ok", "python": "ok"}))
+    sys.exit(0)
+
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
@@ -222,17 +237,6 @@ def save_cached_model(cache_key, bundle):
         pass
 
 # ── Entry point ──────────────────────────────────────────────────────────────
-if len(sys.argv) < 2:
-    print(json.dumps({"error": "No input provided"}))
-    sys.exit(1)
-
-try:
-    inp = json.loads(sys.argv[1])
-except Exception:
-    print(json.dumps({"error": "Invalid JSON input"}))
-    sys.exit(1)
-
-mode     = inp.get("mode", "forecast")
 csv_path = inp.get("csv_path") if inp.get("csv_path") and os.path.isfile(inp["csv_path"]) else DEFAULT_CSV
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -630,34 +634,32 @@ def build_input_vector(inp_data, feature_list, df_ref):
 
 X_input = build_input_vector(inp, avail_features, df_sorted)
 
-# ════════════════════════════════════════════════════════════════════════════
-# MODE: forecast (default) — predict + prediction interval + basic explanation
-# ════════════════════════════════════════════════════════════════════════════
-if mode in ("forecast", "full"):
+
+def build_forecast_result(input_data):
+    """Build the standard forecast response for one input using the fitted model."""
+    input_vector = build_input_vector(input_data, avail_features, df_sorted)
     interval_fn = prediction_interval if active_model == "Random Forest" else regression_interval
-    pi = interval_fn(model_full, X_input, avail_features, df_train_cv, df_train_cv[TARGET])
+    pi = interval_fn(model_full, input_vector, avail_features, df_train_cv, df_train_cv[TARGET])
     if active_model == "Random Forest":
-        contributions, full_pred, baseline_pred = shap_tree_manual(model_full, X_input, avail_features, bg_mean)
+        contributions, full_pred, baseline_pred = shap_tree_manual(model_full, input_vector, avail_features, bg_mean)
     else:
         full_pred = pi["predicted"]
         baseline_pred = float(model_full.predict(bg_mean.reshape(1, -1))[0])
         contributions = []
 
-    recommended_stock = round(pi["predicted"] * 1.15, 2)
-
-    result = {
-        "predicted_demand":   pi["predicted"],
-        "recommended_stock":  recommended_stock,
+    return {
+        "predicted_demand": pi["predicted"],
+        "recommended_stock": round(pi["predicted"] * 1.15, 2),
         "prediction_interval": {
-            "lower":      pi["lower"],
-            "upper":      pi["upper"],
+            "lower": pi["lower"],
+            "upper": pi["upper"],
             "confidence": pi["confidence"]
         },
         "model_metrics": {
-            "mae":  cv_metrics["mae"],
+            "mae": cv_metrics["mae"],
             "rmse": cv_metrics["rmse"],
             "mape": cv_metrics["mape"],
-            "r2":   cv_metrics["r2"],
+            "r2": cv_metrics["r2"],
             "bias": cv_metrics["bias"],
             "train_samples": len(X_tr),
             "test_samples": len(X_te),
@@ -669,6 +671,21 @@ if mode in ("forecast", "full"):
         "training_rows": len(X_all),
         "features_used": avail_features
     }
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# MODE: forecast (default) — predict + prediction interval + basic explanation
+# ════════════════════════════════════════════════════════════════════════════
+if mode == "batch":
+    items = inp.get("items")
+    if not isinstance(items, list) or not items or not all(isinstance(item, dict) for item in items):
+        print(json.dumps({"error": "Batch mode requires a non-empty 'items' array of objects."}))
+        sys.exit(1)
+    print(json.dumps({"forecasts": [build_forecast_result(item) for item in items]}))
+    sys.exit(0)
+
+if mode in ("forecast", "full"):
+    result = build_forecast_result(inp)
 
     if mode == "full":
         if active_model == "Random Forest":

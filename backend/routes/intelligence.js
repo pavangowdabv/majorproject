@@ -30,7 +30,8 @@ const RF_MODEL = path.join(__dirname, '..', 'rf_model.py');
 const DATA_CSV = path.join(__dirname, '..', 'data.csv');
 const AUDIT_FILE = path.join(__dirname, '..', 'audit.json');
 const PRODUCT_FORECAST_CACHE = new Map();
-const PRODUCT_FORECAST_TTL_MS = 30000;
+const PRODUCT_FORECAST_PENDING = new Map();
+const PRODUCT_FORECAST_TTL_MS = 300000;
 
 function cleanupTemporaryModelSnapshots() {
   const backendDir = path.join(__dirname, '..');
@@ -174,24 +175,46 @@ function getDatasetSignature(userId) {
 }
 
 async function getCachedEnrichedProducts(userId) {
+  const hasUserDataset = db.listDatasets(userId).length > 0;
   const signature = getDatasetSignature(userId);
-  const cacheKey = `${userId}:${getActiveModel(userId)}:${signature}`;
+  const activeModel = getActiveModel(userId);
+  const cacheScope = hasUserDataset ? userId : 'default';
+  const cacheKey = `${cacheScope}:${activeModel}:${signature}`;
   const now = Date.now();
   const cached = PRODUCT_FORECAST_CACHE.get(cacheKey);
   if (cached && now - cached.timestamp < PRODUCT_FORECAST_TTL_MS) {
     return cached.products;
   }
 
-  const products = getProductCatalogue(getUserDatasetRows(userId));
-  const forecasts = await Promise.all(products.map(product =>
-    runPythonForUser({ mode: 'forecast', model: getActiveModel(userId), ...product }, userId)
-      .then(forecast => ({ product, ...calculateRisk(product, forecast) }))
-      .catch(() => ({ product, risk_level: 'unknown' }))
-  ));
+  const pending = PRODUCT_FORECAST_PENDING.get(cacheKey);
+  if (pending) return pending;
 
-  PRODUCT_FORECAST_CACHE.set(cacheKey, { products: forecasts, timestamp: now });
-  return forecasts;
+  const products = getProductCatalogue(getUserDatasetRows(userId));
+  const forecastPromise = runPythonForUser({
+    mode: 'batch',
+    model: activeModel,
+    items: products,
+  }, userId).then(result => {
+    if (!Array.isArray(result.forecasts) || result.forecasts.length !== products.length) {
+      throw new Error('The forecast model returned an incomplete batch result.');
+    }
+    const forecasts = products.map((product, index) => ({
+      product,
+      ...calculateRisk(product, result.forecasts[index]),
+    }));
+    PRODUCT_FORECAST_CACHE.set(cacheKey, { products: forecasts, timestamp: Date.now() });
+    return forecasts;
+  }).finally(() => {
+    PRODUCT_FORECAST_PENDING.delete(cacheKey);
+  });
+  PRODUCT_FORECAST_PENDING.set(cacheKey, forecastPromise);
+  return forecastPromise;
 }
+
+setImmediate(() => {
+  getCachedEnrichedProducts('__default_forecast_warmup__')
+    .catch(error => console.error('[forecast warmup]', error.message));
+});
 
 // ── Risk calculation (transparent, traceable) ────────────────────────────────
 function calculateRisk(product, forecastResult) {

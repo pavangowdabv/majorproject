@@ -8,12 +8,22 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const DB_PATH = path.join(__dirname, 'data.json');
+let cachedData = null;
+let cachedSignature = null;
+
+function getDatabaseSignature() {
+  const stat = fs.statSync(DB_PATH);
+  return `${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}`;
+}
 
 /* ── Load / initialise ──────────────────────────────────────────────────── */
 function load() {
   if (!fs.existsSync(DB_PATH)) {
     fs.writeFileSync(DB_PATH, JSON.stringify({ users: [], otps: [], scenarios: [], datasets: [], actions: [], suppliers: [], purchaseRequests: [], purchaseOrders: [], goodsReceipts: [], inventoryTransactions: [] }, null, 2));
   }
+  const signature = getDatabaseSignature();
+  if (cachedData && cachedSignature === signature) return cachedData;
+
   const data = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
   let changed = false;
   const supportedUsers = (data.users || []).filter(user => user.role !== 'CUSTOMER');
@@ -34,12 +44,19 @@ function load() {
   ['suppliers', 'purchaseRequests', 'purchaseOrders', 'goodsReceipts', 'inventoryTransactions'].forEach(collection => {
     if (!Array.isArray(data[collection])) { data[collection] = []; changed = true; }
   });
-  if (changed) save(data);
+  if (changed) {
+    save(data);
+  } else {
+    cachedData = data;
+    cachedSignature = signature;
+  }
   return data;
 }
 
 function save(data) {
   fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
+  cachedData = data;
+  cachedSignature = getDatabaseSignature();
 }
 
 /* ── Users ──────────────────────────────────────────────────────────────── */
@@ -88,7 +105,7 @@ function insertUser({ firstName, lastName, name, email, phone, password, passwor
 function markUserVerified(id) {
   const db = load();
   const user = db.users.find(u => u.id === id);
-  if (user) { user.verified = true; save(db); }
+  if (user && !user.verified) { user.verified = true; save(db); }
 }
 
 function listUsers() { return load().users; }
