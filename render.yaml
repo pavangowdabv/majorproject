@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: forecastiq-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install && pip install -r requirements.txt
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PYTHON_CMD
+        value: python3
