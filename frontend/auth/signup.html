@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ForecastIQ — Create Account</title>
+  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+  <div class="auth-layout">
+
+    <!-- LEFT — Dark Brand Panel -->
+    <div class="auth-left">
+      <div class="auth-brand">
+        <div class="official-logo official-logo-auth" role="img"
+          aria-label="ForecastIQ Smart Inventory Demand Forecasting Decision Support System">
+          <img src="../assests/branding/forecastiq-logo-transparent.png" alt="ForecastIQ" />
+        </div>
+      </div>
+      <div class="auth-hero">
+        <h1 class="auth-hero-title">Join the<br /><span>AI-Powered</span><br />Platform</h1>
+        <p class="auth-hero-sub">Start forecasting demand with enterprise-grade machine learning models. No setup
+          required.</p>
+        <div class="auth-stats">
+          <div class="auth-stat">
+            <div class="auth-stat-val">94.7%</div>
+            <div class="auth-stat-label">Model Accuracy</div>
+          </div>
+          <div class="auth-stat">
+            <div class="auth-stat-val">48,920</div>
+            <div class="auth-stat-label">Units Predicted</div>
+          </div>
+          <div class="auth-stat">
+            <div class="auth-stat-val">$2.84M</div>
+            <div class="auth-stat-label">Revenue Forecast</div>
+          </div>
+          <div class="auth-stat">
+            <div class="auth-stat-val">Free</div>
+            <div class="auth-stat-label">To Get Started</div>
+          </div>
+        </div>
+        <div class="auth-badges">
+          <span class="auth-badge"><i class="fa-solid fa-lock"></i> Secure &amp; Private</span>
+          <span class="auth-badge"><i class="fa-solid fa-bolt"></i> Instant Access</span>
+          <span class="auth-badge"><i class="fa-solid fa-microchip"></i> LSTM Neural Net</span>
+        </div>
+      </div>
+      <div class="auth-left-footer" aria-hidden="true"></div>
+    </div>
+
+    <!-- RIGHT — White Form Panel -->
+    <div class="auth-right">
+      <div class="auth-form-wrap">
+
+        <!-- Mobile brand -->
+        <div class="auth-mobile-brand">
+          <div class="official-logo official-logo-mobile" role="img" aria-label="ForecastIQ">
+            <img src="../assests/branding/forecastiq-logo-transparent.png" alt="ForecastIQ" />
+          </div>
+        </div>
+
+        <!-- Signup form -->
+        <div class="auth-step" id="stepForm">
+          <div class="ap-header">
+            <h2>Create account</h2>
+            <p>Fill in your details to get started</p>
+          </div>
+
+          <div class="alert-msg" id="signupAlert"></div>
+
+          <div class="ap-two-col">
+            <div class="ap-input-group">
+              <div class="ap-input-wrap">
+                <i class="fa-solid fa-user ap-icon"></i>
+                <input class="ap-input" type="text" id="firstName" placeholder="First name"
+                  autocomplete="given-name" />
+              </div>
+              <span class="ap-error" id="firstNameError">Required.</span>
+            </div>
+            <div class="ap-input-group">
+              <div class="ap-input-wrap">
+                <i class="fa-solid fa-user ap-icon"></i>
+                <input class="ap-input" type="text" id="lastName" placeholder="Last name"
+                  autocomplete="family-name" />
+              </div>
+            </div>
+          </div>
+
+          <div class="ap-input-group">
+            <div class="ap-input-wrap">
+              <i class="fa-solid fa-envelope ap-icon"></i>
+              <input class="ap-input" type="email" id="signupEmail" placeholder="Email address"
+                autocomplete="email" />
+            </div>
+            <span class="ap-error" id="emailError">Enter a valid email address.</span>
+          </div>
+
+          <div class="ap-input-group">
+            <div class="ap-input-wrap">
+              <i class="fa-solid fa-phone ap-icon"></i>
+              <input class="ap-input" type="tel" id="signupPhone" placeholder="Phone number (optional)"
+                autocomplete="tel" />
+            </div>
+            <span class="ap-error" id="phoneError">Enter a valid phone number.</span>
+          </div>
+
+          <div class="ap-input-group">
+            <div class="ap-input-wrap">
+              <i class="fa-solid fa-lock ap-icon"></i>
+              <input class="ap-input" type="password" id="signupPassword" placeholder="Password (min. 8 chars)"
+                autocomplete="new-password" />
+              <button class="ap-eye" id="togglePwd" type="button"><i class="fa-solid fa-eye"></i></button>
+            </div>
+            <div class="strength-bar">
+              <div class="sb-seg" id="seg1"></div>
+              <div class="sb-seg" id="seg2"></div>
+              <div class="sb-seg" id="seg3"></div>
+              <div class="sb-seg" id="seg4"></div>
+            </div>
+            <span class="strength-lbl" id="strengthLbl"></span>
+            <span class="ap-error" id="passwordError">Min. 8 characters.</span>
+          </div>
+
+          <div class="ap-input-group">
+            <div class="ap-input-wrap">
+              <i class="fa-solid fa-lock ap-icon"></i>
+              <input class="ap-input" type="password" id="confirmPassword" placeholder="Confirm password"
+                autocomplete="new-password" />
+              <button class="ap-eye" id="toggleConfirm" type="button"><i class="fa-solid fa-eye"></i></button>
+            </div>
+            <span class="ap-error" id="confirmError">Passwords do not match.</span>
+          </div>
+
+          <label class="ap-terms">
+            <input type="checkbox" id="termsCheck" />
+            I agree to the <a href="#" class="ap-link">Terms of Service</a> and
+            <a href="#" class="ap-link">Privacy Policy</a>
+          </label>
+
+          <button class="ap-btn" id="signupBtn">
+            <span class="ap-btn-text">Create Account</span>
+            <span class="ap-spinner" id="signupSpinner"></span>
+            <i class="fa-solid fa-arrow-right ap-btn-icon"></i>
+          </button>
+
+          <div class="ap-footer">Already have an account? <a href="login.html" class="ap-link">Sign in</a></div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="auth-step hidden" id="stepSuccess">
+          <div class="success-anim">
+            <div class="success-ring"><i class="fa-solid fa-check"></i></div>
+            <h2>Account Created!</h2>
+            <p>Launching your dashboard...</p>
+            <div class="launch-bar">
+              <div class="launch-fill" id="launchFill"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    guardAuth();
+
+    /* Password toggles */
+    ['togglePwd:signupPassword', 'toggleConfirm:confirmPassword'].forEach(pair => {
+      const [btnId, inpId] = pair.split(':');
+      document.getElementById(btnId).addEventListener('click', () => {
+        const inp = document.getElementById(inpId);
+        const icon = document.querySelector(`#${btnId} i`);
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+        icon.className = inp.type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+      });
+    });
+
+    /* Password strength */
+    document.getElementById('signupPassword').addEventListener('input', function () {
+      const s = pwdStrength(this.value);
+      const c = ['', '#dc2626', '#d97706', '#2563eb', '#059669'];
+      const l = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`seg${i}`).style.background = i <= s ? c[s] : '#e5e7eb';
+      }
+      const lbl = document.getElementById('strengthLbl');
+      lbl.textContent = this.value.length ? l[s] : '';
+      lbl.style.color = c[s];
+    });
+
+    function pwdStrength(p) {
+      let s = 0;
+      if (p.length >= 8) s++; if (/[A-Z]/.test(p)) s++;
+      if (/[0-9]/.test(p)) s++; if (/[^A-Za-z0-9]/.test(p)) s++;
+      return Math.max(1, s);
+    }
+
+    function validate() {
+      let ok = true;
+      const set = (id, errId, cond) => {
+        document.getElementById(id).classList.toggle('error', cond);
+        document.getElementById(errId).classList.toggle('show', cond);
+        if (cond) ok = false;
+      };
+      const fn = document.getElementById('firstName').value.trim();
+      const em = document.getElementById('signupEmail').value.trim();
+      const ph = document.getElementById('signupPhone').value.trim();
+      const pw = document.getElementById('signupPassword').value;
+      const cf = document.getElementById('confirmPassword').value;
+      set('firstName', 'firstNameError', !fn);
+      set('signupEmail', 'emailError', !em || !isEmail(em));
+      set('signupPhone', 'phoneError', !!ph && !isPhone(ph));
+      set('signupPassword', 'passwordError', pw.length < 8);
+      set('confirmPassword', 'confirmError', pw !== cf);
+      return { ok, fn, em, ph, pw, ln: document.getElementById('lastName').value.trim() };
+    }
+
+    document.getElementById('signupBtn').addEventListener('click', async () => {
+      hideAlert('signupAlert');
+      const { ok, fn, ln, em, ph, pw } = validate();
+      if (!ok) return;
+      if (!document.getElementById('termsCheck').checked) {
+        showAlert('signupAlert', 'warning', 'Please accept the Terms of Service.');
+        return;
+      }
+
+      setBtnLoading('signupBtn', true, 'Creating account...');
+      try {
+        const data = await apiSignup({ firstName: fn, lastName: ln, email: em, phone: ph, password: pw });
+        if (!data.ok) {
+          showAlert('signupAlert', 'error', data.error || 'Signup failed.');
+          setBtnLoading('signupBtn', false);
+          return;
+        }
+        saveSession(data.user, data.token);
+        switchStep('stepForm', 'stepSuccess');
+        animateLaunch();
+      } catch {
+        showAlert('signupAlert', 'error', 'Cannot reach the server. Make sure the backend is running.');
+        setBtnLoading('signupBtn', false);
+      }
+    });
+
+    function animateLaunch() {
+      const fill = document.getElementById('launchFill'); let w = 0;
+      const iv = setInterval(() => {
+        w += 2; fill.style.width = w + '%';
+        if (w >= 100) { clearInterval(iv); setTimeout(redirectToDashboard, 300); }
+      }, 20);
+    }
+
+    function switchStep(from, to) {
+      const f = document.getElementById(from), t = document.getElementById(to);
+      f.classList.add('step-out');
+      setTimeout(() => {
+        f.classList.add('hidden'); f.classList.remove('step-out');
+        t.classList.remove('hidden'); t.classList.add('step-in');
+        setTimeout(() => t.classList.remove('step-in'), 400);
+      }, 280);
+    }
+  </script>
+</body>
+
+</html>

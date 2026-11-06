@@ -1,0 +1,10 @@
+node_modules/
+.env
+*.sqlite
+__pycache__/
+*.pyc
+*.pyo
+model_cache/
+_upload_*.csv
+_user_*.csv
+_quality_*.csv

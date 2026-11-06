@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ForecastIQ — Sign In</title>
+  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+  <div class="auth-layout">
+
+    <!-- LEFT — Dark Brand Panel -->
+    <div class="auth-left">
+      <div class="auth-brand">
+        <div class="official-logo official-logo-auth" role="img"
+          aria-label="ForecastIQ Smart Inventory Demand Forecasting Decision Support System">
+          <img src="../assests/branding/forecastiq-logo-transparent.png" alt="ForecastIQ" />
+        </div>
+      </div>
+      <div class="auth-hero">
+        <h1 class="auth-hero-title">AI-Powered<br /><span>Demand</span><br />Forecasting</h1>
+        <p class="auth-hero-sub">Predict inventory needs, reduce overstock, and make smarter supply chain decisions with
+          real-time ML models.</p>
+        <div class="auth-stats">
+          <div class="auth-stat">
+            <div class="auth-stat-val">94.7%</div>
+            <div class="auth-stat-label">Model Accuracy</div>
+          </div>
+          <div class="auth-stat">
+            <div class="auth-stat-val">48,920</div>
+            <div class="auth-stat-label">Units Predicted</div>
+          </div>
+          <div class="auth-stat">
+            <div class="auth-stat-val">$2.84M</div>
+            <div class="auth-stat-label">Revenue Forecast</div>
+          </div>
+          <div class="auth-stat">
+            <div class="auth-stat-val">0.032</div>
+            <div class="auth-stat-label">Model RMSE</div>
+          </div>
+        </div>
+        <div class="auth-badges">
+          <span class="auth-badge"><i class="fa-solid fa-microchip"></i> LSTM Neural Net</span>
+          <span class="auth-badge"><i class="fa-solid fa-chart-line"></i> Real-time Forecast</span>
+          <span class="auth-badge"><i class="fa-solid fa-shield-halved"></i> Secure Auth</span>
+        </div>
+      </div>
+      <div class="auth-left-footer" aria-hidden="true"></div>
+    </div>
+
+    <!-- RIGHT — White Form Panel -->
+    <div class="auth-right">
+      <div class="auth-form-wrap">
+
+        <!-- Mobile brand -->
+        <div class="auth-mobile-brand">
+          <div class="official-logo official-logo-mobile" role="img" aria-label="ForecastIQ">
+            <img src="../assests/branding/forecastiq-logo-transparent.png" alt="ForecastIQ" />
+          </div>
+        </div>
+
+        <!-- Login form -->
+        <div class="auth-step" id="stepLogin">
+          <div class="ap-header">
+            <h2>Welcome back</h2>
+            <p>Sign in to your forecasting workspace</p>
+          </div>
+
+          <div class="alert-msg" id="loginAlert"></div>
+
+          <div class="ap-input-group">
+            <div class="ap-input-wrap">
+              <i class="fa-solid fa-envelope ap-icon"></i>
+              <input class="ap-input" type="text" id="identifier" placeholder="Email address"
+                autocomplete="username" />
+            </div>
+            <span class="ap-error" id="idError">Enter a valid email address.</span>
+          </div>
+
+          <div class="ap-input-group">
+            <div class="ap-input-wrap">
+              <i class="fa-solid fa-lock ap-icon"></i>
+              <input class="ap-input" type="password" id="password" placeholder="Password"
+                autocomplete="current-password" />
+              <button type="button" class="ap-eye" id="pwToggle">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+            <span class="ap-error" id="pwError">Password is required.</span>
+          </div>
+
+          <div class="ap-row">
+            <label class="ap-check"><input type="checkbox" id="rememberMe" /> Remember me</label>
+          </div>
+
+          <button class="ap-btn" id="loginBtn">
+            <span class="ap-btn-text">Sign In</span>
+            <span class="ap-spinner" id="loginSpinner"></span>
+            <i class="fa-solid fa-arrow-right ap-btn-icon"></i>
+          </button>
+
+          <div class="ap-footer">New user? <a href="signup.html" class="ap-link">Create account</a></div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="auth-step hidden" id="stepSuccess">
+          <div class="success-anim">
+            <div class="success-ring"><i class="fa-solid fa-check"></i></div>
+            <h2>Access Granted</h2>
+            <p>Launching your dashboard...</p>
+            <div class="launch-bar">
+              <div class="launch-fill" id="launchFill"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    guardAuth();
+
+    // Toggle password visibility
+    document.getElementById('pwToggle').addEventListener('click', function () {
+      const inp = document.getElementById('password');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      this.querySelector('i').className = inp.type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+    });
+
+    // Clear errors on input
+    document.getElementById('identifier').addEventListener('input', function () {
+      this.classList.remove('error');
+      document.getElementById('idError').classList.remove('show');
+      hideAlert('loginAlert');
+    });
+    document.getElementById('password').addEventListener('input', function () {
+      this.classList.remove('error');
+      document.getElementById('pwError').classList.remove('show');
+    });
+
+    async function doLogin() {
+      const id = document.getElementById('identifier').value.trim();
+      const pw = document.getElementById('password').value;
+      let valid = true;
+
+      if (!id || (!isEmail(id) && !isPhone(id))) {
+        document.getElementById('identifier').classList.add('error');
+        document.getElementById('idError').classList.add('show');
+        valid = false;
+      }
+      if (!pw) {
+        document.getElementById('password').classList.add('error');
+        document.getElementById('pwError').classList.add('show');
+        valid = false;
+      }
+      if (!valid) return;
+
+      setBtnLoading('loginBtn', true, 'Signing in...');
+      hideAlert('loginAlert');
+
+      try {
+        const data = await apiLoginPassword(id, pw);
+        if (data.ok) {
+          saveSession(data.user, data.token);
+          switchStep('stepLogin', 'stepSuccess');
+          animateLaunch();
+        } else {
+          showAlert('loginAlert', 'error', data.error || 'Login failed.');
+          setBtnLoading('loginBtn', false);
+        }
+      } catch {
+        showAlert('loginAlert', 'error', 'Cannot reach the server. Make sure the backend is running.');
+        setBtnLoading('loginBtn', false);
+      }
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', doLogin);
+    document.getElementById('password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+    document.getElementById('identifier').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('password').focus();
+    });
+
+    function animateLaunch() {
+      const fill = document.getElementById('launchFill');
+      let w = 0;
+      const iv = setInterval(() => {
+        w += 2; fill.style.width = w + '%';
+        if (w >= 100) { clearInterval(iv); setTimeout(redirectToDashboard, 300); }
+      }, 20);
+    }
+
+    function switchStep(from, to) {
+      const f = document.getElementById(from), t = document.getElementById(to);
+      f.classList.add('step-out');
+      setTimeout(() => {
+        f.classList.add('hidden'); f.classList.remove('step-out');
+        t.classList.remove('hidden'); t.classList.add('step-in');
+        setTimeout(() => t.classList.remove('step-in'), 400);
+      }, 280);
+    }
+  </script>
+</body>
+
+</html>

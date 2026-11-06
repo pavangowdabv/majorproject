@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ForecastIQ — Demand Intelligence Platform</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+  <canvas id="particleCanvas"></canvas>
+
+  <div class="app-layout">
+
+    <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="official-logo official-logo-sidebar" role="img"
+          aria-label="ForecastIQ Smart Inventory Demand Forecasting Decision Support System"><img
+            src="assests/branding/forecastiq-logo-transparent.png" alt="ForecastIQ" /></div>
+      </div>
+
+      <nav class="sidebar-nav">
+
+        <div class="nav-section-label">Command Center</div>
+        <a href="#" class="nav-item active" data-page="dashboard">
+          <div class="nav-icon"><i class="fa-solid fa-gauge-high"></i></div>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-page="intelligence-center">
+          <div class="nav-icon"><i class="fa-solid fa-brain"></i></div>
+          <span>Intelligence Center</span>
+        </a>
+
+        <div class="nav-section-label">Forecasting</div>
+        <a href="#" class="nav-item" data-page="forecast">
+          <div class="nav-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <span>Forecast</span>
+        </a>
+        <a href="#" class="nav-item" data-page="upload">
+          <div class="nav-icon"><i class="fa-solid fa-upload"></i></div>
+          <span>Dataset</span>
+        </a>
+        <a href="#" class="nav-item" data-page="analytics">
+          <div class="nav-icon"><i class="fa-solid fa-chart-pie"></i></div>
+          <span>Analytics</span>
+        </a>
+        <a href="#" class="nav-item" data-page="alerts">
+          <div class="nav-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+          <span>Alerts</span>
+          <span class="nav-badge" id="actionBadge" style="display:none">0</span>
+        </a>
+        <div class="nav-section-label">Machine Learning</div>
+        <a href="#" class="nav-item" data-page="ml">
+          <div class="nav-icon"><i class="fa-solid fa-microchip"></i></div>
+          <span>ML Predict</span>
+        </a>
+        <a href="#" class="nav-item" data-page="model-lab">
+          <div class="nav-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <span>Model Lab</span>
+        </a>
+
+        <div class="nav-section-label">AI</div>
+        <a href="#" class="nav-item" data-page="copilot">
+          <div class="nav-icon"><i class="fa-solid fa-robot"></i></div>
+          <span>ForecastIQ Copilot</span>
+        </a>
+        <a href="#" class="nav-item" data-page="scenario-lab">
+          <div class="nav-icon"><i class="fa-solid fa-flask"></i></div>
+          <span>Scenario Lab</span>
+        </a>
+        <a href="#" class="nav-item" data-page="action-center">
+          <div class="nav-icon"><i class="fa-solid fa-bolt"></i></div>
+          <span>Action Center</span>
+        </a>
+
+        <div class="nav-section-label">Reporting</div>
+        <a href="#" class="nav-item" data-page="reports">
+          <div class="nav-icon"><i class="fa-solid fa-file-chart-column"></i></div>
+          <span>Reports</span>
+        </a>
+        <a href="#" class="nav-item" data-page="audit">
+          <div class="nav-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+          <span>Audit Log</span>
+        </a>
+        <a href="#" class="nav-item" data-page="data-quality">
+          <div class="nav-icon"><i class="fa-solid fa-shield-check"></i></div>
+          <span>Data Quality</span>
+        </a>
+
+        <div class="nav-section-label">Operations</div>
+        <a href="#" class="nav-item" data-page="procurement">
+          <div class="nav-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+          <span>Procurement Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-page="warehouse">
+          <div class="nav-icon"><i class="fa-solid fa-warehouse"></i></div>
+          <span>Warehouse Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-page="purchase-requests">
+          <div class="nav-icon"><i class="fa-solid fa-file-invoice"></i></div>
+          <span>Purchase Requests</span>
+        </a>
+        <a href="#" class="nav-item" data-page="purchase-orders">
+          <div class="nav-icon"><i class="fa-solid fa-file-signature"></i></div>
+          <span>Purchase Orders</span>
+        </a>
+        <a href="#" class="nav-item" data-page="suppliers">
+          <div class="nav-icon"><i class="fa-solid fa-truck-field"></i></div>
+          <span>Suppliers</span>
+        </a>
+        <a href="#" class="nav-item" data-page="deliveries">
+          <div class="nav-icon"><i class="fa-solid fa-dolly"></i></div>
+          <span>Incoming Deliveries</span>
+        </a>
+        <a href="#" class="nav-item" data-page="inventory-transactions">
+          <div class="nav-icon"><i class="fa-solid fa-right-left"></i></div>
+          <span>Inventory Transactions</span>
+        </a>
+
+        <div class="nav-section-label">System</div>
+        <a href="#" class="nav-item" data-page="settings">
+          <div class="nav-icon"><i class="fa-solid fa-gear"></i></div>
+          <span>Settings</span>
+        </a>
+        <a href="#" class="nav-item" data-page="user-management" data-roles="ADMIN">
+          <div class="nav-icon"><i class="fa-solid fa-users-gear"></i></div>
+          <span>User Management</span>
+        </a>
+
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sys-status">
+          <span class="status-dot"></span>
+          <span>System Online</span>
+        </div>
+        <span class="version">v3.0.0</span>
+      </div>
+    </aside>
+
+    <!-- ═══════════════════ MAIN WRAPPER ═══════════════════ -->
+    <div class="main-wrapper">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" title="Toggle navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="page-breadcrumb">
+            <i class="fa-solid fa-chart-line" style="color:var(--accent)"></i>
+            <span id="pageTitle">Dashboard</span>
+          </div>
+        </div>
+        <div class="topbar-center">
+          <div class="search-bar" id="searchBarWrap">
+            <i class="fa-solid fa-search" id="searchIcon"></i>
+            <input type="text" placeholder="Search products, forecasts…" id="globalSearch" autocomplete="off" />
+            <span class="search-kbd-hint">Ctrl K</span>
+          </div>
+          <!-- Search results dropdown -->
+          <div class="search-dropdown" id="searchDropdown" style="display:none">
+            <div class="search-dropdown-inner" id="searchDropdownInner">
+              <div class="search-empty" id="searchEmpty">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Search products, forecasts, alerts, scenarios, reports…</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="live-clock" id="liveClock">00:00:00</div>
+          <button class="icon-btn" id="darkModeToggle" title="Toggle Theme">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <button class="icon-btn notif-btn">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notif-dot"></span>
+          </button>
+          <div style="position:relative">
+            <div class="user-avatar" id="userAvatarBtn"><i class="fa-solid fa-user"></i></div>
+            <div id="userDropdown"
+              style="display:none;position:absolute;right:0;top:44px;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.12);min-width:200px;z-index:300;overflow:hidden">
+              <div style="padding:13px 16px;border-bottom:1px solid #f3f4f6">
+                <div style="font-weight:700;color:#111827;font-size:0.84rem;margin-bottom:2px" id="userGreeting">Welcome
+                </div>
+                <div style="color:#6b7280;font-size:0.72rem" id="userIdentifier"></div>
+                <div style="color:#3E92CC;font-size:0.68rem;font-weight:700;margin-top:5px" id="userRole"></div>
+              </div>
+              <button onclick="logoutUser()"
+                style="width:100%;padding:11px 16px;text-align:left;font-size:0.81rem;color:#dc2626;display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:inherit"
+                onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">
+                <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- PAGE CONTENT -->
+      <main class="content-area">
+
+        <section class="page" id="page-intelligence-center">
+          <div class="page-header">
+            <div>
+              <h2>ForecastIQ Intelligence Center</h2>
+              <p class="page-sub">Live decision support over the active validated dataset</p>
+            </div>
+            <div class="page-header-actions"><span class="header-badge"><span class="pulse-dot"></span><span
+                  id="intelligenceStatus">Ready</span></span><button class="help-btn"
+                onclick="showHelp('intelligence-center')"><i class="fa-solid fa-circle-question"></i> Help</button>
+            </div>
+          </div>
+          <div class="kpi-grid-6 ic-kpis">
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-green"><i class="fa-solid fa-bullseye"></i></div>
+              <div class="kpi-info"><span class="kpi-label">Forecast confidence</span><span class="kpi-value"
+                  id="icConfidence">—</span></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-amber"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              <div class="kpi-info"><span class="kpi-label">Inventory risk</span><span class="kpi-value"
+                  id="icRisk">—</span></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-cyan"><i class="fa-solid fa-bolt"></i></div>
+              <div class="kpi-info"><span class="kpi-label">Actions required</span><span class="kpi-value"
+                  id="icActions">—</span></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-blue"><i class="fa-solid fa-boxes-stacked"></i></div>
+              <div class="kpi-info"><span class="kpi-label">Inventory value</span><span class="kpi-value"
+                  id="icInventoryValue">—</span></div>
+            </div>
+          </div>
+          <article class="glass-card ic-situation">
+            <div><span class="eyebrow">AI situation summary</span>
+              <h3 id="icSituationSummary">Loading the current inventory situation...</h3>
+            </div><i class="fa-solid fa-arrow-trend-up"></i>
+          </article>
+          <div class="ic-grid">
+            <article class="glass-card ic-panel">
+              <div class="ic-panel-title">
+                <h3>Self-Healing Forecast Engine</h3><button class="help-btn" onclick="runModelHealth()"><i
+                    class="fa-solid fa-heart-pulse"></i> Analyze</button>
+              </div>
+              <p class="ic-note">Compares actual chronological validation metrics. Model activation is gated by
+                validation.</p>
+              <div id="modelHealthResult" class="ic-output">Run analysis to inspect model health.</div>
+            </article>
+            <article class="glass-card ic-panel">
+              <div class="ic-panel-title">
+                <h3>Inventory Digital Twin</h3><button class="help-btn" onclick="runDigitalTwin()"><i
+                    class="fa-solid fa-cubes"></i> Project</button>
+              </div>
+              <p class="ic-note">Projects each product's inventory against its live forecast and safety stock.</p>
+              <div id="twinResult" class="ic-output">Project the current inventory state.</div>
+            </article>
+            <article class="glass-card ic-panel">
+              <div class="ic-panel-title">
+                <h3>What-If Scenario</h3><button class="help-btn" onclick="runWhatIf()"><i
+                    class="fa-solid fa-flask"></i> Run</button>
+              </div>
+              <div class="ic-form"><select id="icProduct" class="glass-select"></select><label>Demand change % <input
+                    id="icDemand" type="number" value="30" class="form-control"></label><label>Inventory change % <input
+                    id="icInventory" type="number" value="0" class="form-control"></label><label>Supplier delay (days)
+                  <input id="icDelay" type="number" value="0" min="0" class="form-control"></label><label>Price change %
+                  <input id="icPrice" type="number" value="0" class="form-control"></label></div>
+              <div id="whatIfResult" class="ic-output">Change assumptions and run a live simulation.</div>
+            </article>
+            <article class="glass-card ic-panel">
+              <div class="ic-panel-title">
+                <h3>AI Decision Boardroom</h3><button class="help-btn" onclick="runAgents()"><i
+                    class="fa-solid fa-users-viewfinder"></i> Run agents</button>
+              </div>
+              <p class="ic-note">Five explainable analytical agents evaluate the same active dataset.</p>
+              <div id="agentsResult" class="ic-output">Demand, inventory, risk, finance and decision analysis will
+                appear here.</div>
+            </article>
+            <article class="glass-card ic-panel">
+              <div class="ic-panel-title">
+                <h3>Cash-Aware Budget Optimizer</h3><button class="help-btn" onclick="runOptimizer()"><i
+                    class="fa-solid fa-coins"></i> Optimize</button>
+              </div>
+              <div class="ic-form"><label>Available budget (₹) <input id="icBudgetInput" type="number" min="0"
+                    value="1000000" class="form-control"></label></div>
+              <div id="optimizerResult" class="ic-output">Allocation is constrained to the budget you enter.</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="page" id="page-user-management">
+          <div class="page-header">
+            <div>
+              <h2>User Management</h2>
+              <p class="page-sub">Manage ForecastIQ access and account status</p>
+            </div>
+            <button class="help-btn" id="createUserBtn"><i class="fa-solid fa-user-plus"></i> Create User</button>
+          </div>
+          <div class="glass-card" style="padding:20px">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+              <input class="form-control" id="userSearch" placeholder="Search by name or email" />
+              <select class="form-control" id="userRoleFilter">
+                <option value="">All roles</option>
+                <option>ADMIN</option>
+                <option>PROCUREMENT</option>
+                <option>WAREHOUSE</option>
+              </select>
+              <select class="form-control" id="userStatusFilter">
+                <option value="">All statuses</option>
+                <option>ACTIVE</option>
+                <option>INACTIVE</option>
+              </select>
+            </div>
+            <div style="overflow:auto">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-procurement">
+          <div class="page-header">
+            <div>
+              <h2>Procurement Dashboard</h2>
+              <p class="page-sub">Approved purchasing decisions and supplier execution</p>
+            </div>
+          </div>
+          <div id="procurementContent"></div>
+        </section>
+        <section class="page" id="page-warehouse">
+          <div class="page-header">
+            <div>
+              <h2>Warehouse Dashboard</h2>
+              <p class="page-sub">Receive goods and keep physical inventory accurate</p>
+            </div>
+          </div>
+          <div id="warehouseContent"></div>
+        </section>
+        <section class="page" id="page-purchase-requests">
+          <div class="page-header">
+            <div>
+              <h2>Purchase Requests</h2>
+              <p class="page-sub">Approved requests from the Admin decision workflow</p>
+            </div>
+          </div>
+          <div class="glass-card" style="padding:20px">
+            <div id="purchase-requestsContent"></div>
+          </div>
+        </section>
+        <section class="page" id="page-purchase-orders">
+          <div class="page-header">
+            <div>
+              <h2>Purchase Orders</h2>
+              <p class="page-sub">Manage supplier orders and delivery status</p>
+            </div>
+          </div>
+          <div class="glass-card" style="padding:20px">
+            <div id="purchase-ordersContent"></div>
+          </div>
+        </section>
+        <section class="page" id="page-suppliers">
+          <div class="page-header">
+            <div>
+              <h2>Suppliers</h2>
+              <p class="page-sub">Manage active supplier records</p>
+            </div>
+          </div>
+          <div class="glass-card" style="padding:20px">
+            <div id="suppliersContent"></div>
+          </div>
+        </section>
+        <section class="page" id="page-deliveries">
+          <div class="page-header">
+            <div>
+              <h2>Incoming Deliveries</h2>
+              <p class="page-sub">Verify quantities and record goods receipts</p>
+            </div>
+          </div>
+          <div class="glass-card" style="padding:20px">
+            <div id="deliveriesContent"></div>
+          </div>
+        </section>
+        <section class="page" id="page-inventory-transactions">
+          <div class="page-header">
+            <div>
+              <h2>Inventory Transactions</h2>
+              <p class="page-sub">Auditable inventory movements recorded by the warehouse</p>
+            </div>
+          </div>
+          <div class="glass-card" style="padding:20px">
+            <div id="inventory-transactionsContent"></div>
+          </div>
+        </section>
+
+        <!-- ═══════════ DASHBOARD ═══════════ -->
+        <section class="page active" id="page-dashboard">
+          <div class="page-header">
+            <div>
+              <h2>Command Center</h2>
+              <p class="page-sub">Real-time demand intelligence &amp; AI forecasting</p>
+            </div>
+            <div class="page-header-actions">
+              <div class="header-badge"><span class="pulse-dot"></span> Live Data</div>
+              <button class="help-btn" onclick="showHelp('dashboard')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+
+          <!-- KPI CARDS -->
+          <div class="kpi-grid-6" id="dashKpiGrid">
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-blue"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+              <div class="kpi-info">
+                <span class="kpi-label">Total Revenue</span>
+                <span class="kpi-value" id="kpi-revenue"><span class="skeleton"
+                    style="width:80px;height:22px;display:inline-block"></span></span>
+                <span class="kpi-change positive" id="kpi-revenue-sub"></span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-cyan"><i class="fa-solid fa-chart-line"></i></div>
+              <div class="kpi-info">
+                <span class="kpi-label">Predicted Demand</span>
+                <span class="kpi-value" id="kpi-demand"><span class="skeleton"
+                    style="width:80px;height:22px;display:inline-block"></span></span>
+                <span class="kpi-change" id="kpi-demand-sub"></span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:rgba(220,38,38,0.08);color:#dc2626"><i
+                  class="fa-solid fa-triangle-exclamation"></i></div>
+              <div class="kpi-info">
+                <span class="kpi-label">Revenue at Risk</span>
+                <span class="kpi-value" id="kpi-risk"><span class="skeleton"
+                    style="width:80px;height:22px;display:inline-block"></span></span>
+                <span class="kpi-change negative" id="kpi-risk-sub"></span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon" style="background:rgba(220,38,38,0.08);color:#dc2626"><i
+                  class="fa-solid fa-circle-exclamation"></i></div>
+              <div class="kpi-info">
+                <span class="kpi-label">Critical SKUs</span>
+                <span class="kpi-value" id="kpi-critical"><span class="skeleton"
+                    style="width:40px;height:22px;display:inline-block"></span></span>
+                <span class="kpi-change" id="kpi-critical-sub" style="color:#dc2626"></span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-amber"><i class="fa-solid fa-warehouse"></i></div>
+              <div class="kpi-info">
+                <span class="kpi-label">Overstock SKUs</span>
+                <span class="kpi-value" id="kpi-overstock"><span class="skeleton"
+                    style="width:40px;height:22px;display:inline-block"></span></span>
+                <span class="kpi-change" id="kpi-overstock-sub"></span>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon kpi-green"><i class="fa-solid fa-bullseye"></i></div>
+              <div class="kpi-info">
+                <span class="kpi-label">Forecast Confidence</span>
+                <span class="kpi-value" id="kpi-confidence"><span class="skeleton"
+                    style="width:60px;height:22px;display:inline-block"></span></span>
+                <span class="kpi-change positive" id="kpi-confidence-sub"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ACTION REQUIRED -->
+          <div class="dash-actions-section">
+            <div class="dash-actions-title">
+              <i class="fa-solid fa-bolt" style="color:#ea580c"></i> Action Required
+              <span id="dashActionCount"
+                style="background:#ea580c;color:#fff;font-size:0.65rem;padding:2px 7px;border-radius:10px;font-weight:700"></span>
+            </div>
+            <div id="dash-actions">
+              <div class="skeleton" style="height:54px;border-radius:8px;margin-bottom:6px"></div>
+              <div class="skeleton" style="height:54px;border-radius:8px;margin-bottom:6px"></div>
+              <div class="skeleton" style="height:54px;border-radius:8px"></div>
+            </div>
+          </div>
+
+          <!-- CHARTS -->
+          <div class="charts-row">
+            <div class="glass-card chart-card wide">
+              <div class="chart-card-header">
+                <div><span class="chart-title">Demand Outlook</span><span class="chart-sub">Actual vs Forecast</span>
+                </div>
+                <span class="ai-badge"><i class="fa-solid fa-robot"></i> AI Predicted</span>
+              </div>
+              <canvas id="dashDemandChart"></canvas>
+            </div>
+            <div class="glass-card chart-card">
+              <div class="chart-card-header">
+                <div><span class="chart-title">Inventory Risk Distribution</span></div>
+              </div>
+              <canvas id="dashRiskPie"></canvas>
+            </div>
+          </div>
+
+          <!-- PRODUCT HEALTH TABLE -->
+          <div class="glass-card table-card">
+            <div class="table-header">
+              <span class="chart-title">Product Health Matrix</span>
+              <input type="text" class="table-search" placeholder="Search products..." id="dashTableSearch" />
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Predicted Demand</th>
+                    <th>Inventory</th>
+                    <th>Stockout Risk</th>
+                    <th>Risk Level</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="dashTableBody">
+                  <tr>
+                    <td colspan="7">
+                      <div class="skeleton" style="height:36px;border-radius:4px"></div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="7">
+                      <div class="skeleton" style="height:36px;border-radius:4px;margin-top:4px"></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ DEMAND INTELLIGENCE (FORECAST) ═══════════ -->
+        <section class="page" id="page-forecast">
+          <div class="page-header">
+            <div>
+              <h2>Demand Intelligence</h2>
+              <p class="page-sub">AI-powered demand forecasting with explainability</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="help-btn" onclick="showHelp('forecast')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="forecast-layout">
+            <div class="glass-card forecast-controls">
+              <h3 class="ctrl-title"><i class="fa-solid fa-sliders"></i> Parameters</h3>
+              <div class="form-group">
+                <label>Dataset</label>
+                <select class="glass-select" id="scenarioDataset">
+                  <option value="default">Default dataset</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Product</label>
+                <select class="glass-select" id="forecastProduct">
+                  <option value="">Loading products...</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Dataset</label>
+                <select class="glass-select" id="forecastDataset">
+                  <option value="default">Default dataset</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Sales Volume</label>
+                <input type="number" class="glass-input" id="fcSales" value="7310" />
+              </div>
+              <div class="form-group">
+                <label>Current Inventory</label>
+                <input type="number" class="glass-input" id="fcInventory" value="980" />
+              </div>
+              <div class="form-group">
+                <label>Price (₹)</label>
+                <input type="number" class="glass-input" id="fcPrice" value="2500" />
+              </div>
+              <div class="form-group">
+                <label>Month (1–12)</label>
+                <input type="number" class="glass-input" id="fcMonth" value="6" min="1" max="12" />
+              </div>
+              <div class="form-group">
+                <label>Lead Time (days)</label>
+                <input type="number" class="glass-input" id="fcLeadTime" value="7" />
+              </div>
+              <button class="predict-btn" id="runForecastBtn">
+                <span class="predict-inner"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Predict
+                    Demand</span></span>
+                <div class="predict-glow"></div>
+              </button>
+              <div id="forecastResultBox" style="margin-top:10px"></div>
+            </div>
+            <div class="glass-card forecast-chart-wrap">
+              <div class="chart-card-header">
+                <div><span class="chart-title">Forecast Visualization</span><span class="chart-sub"
+                    id="fcChartSub">Select parameters and run prediction</span></div>
+                <button class="glass-btn-sm" id="downloadForecast"><i class="fa-solid fa-download"></i> Export</button>
+              </div>
+              <canvas id="forecastPageChart" style="max-height:280px"></canvas>
+              <div id="fcContribPanel" style="margin-top:16px;display:none">
+                <div class="chart-title" style="margin-bottom:10px">Feature Contributions</div>
+                <div id="fcContribBars" class="explain-panel"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ INVENTORY INTELLIGENCE (ALERTS) ═══════════ -->
+        <section class="page" id="page-alerts">
+          <div class="page-header">
+            <div>
+              <h2>Inventory Intelligence</h2>
+              <p class="page-sub">Stockout &amp; overstock analysis driven by AI predictions</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="help-btn" onclick="showHelp('alerts')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="alert-cards" id="alertCards">
+            <div class="alert-card info"><i class="fa-solid fa-spinner fa-spin alert-icon"></i>
+              <div>
+                <div class="alert-title">Loading...</div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-card chart-card full-width" style="margin-bottom:20px">
+            <div class="chart-card-header"><span class="chart-title">Forecast vs Inventory</span></div>
+            <canvas id="alertsChart"></canvas>
+          </div>
+          <div class="glass-card table-card">
+            <div class="table-header"><span class="chart-title">Inventory Status</span></div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Inventory</th>
+                    <th>Predicted Demand</th>
+                    <th>Coverage (days)</th>
+                    <th>Stockout Prob.</th>
+                    <th>Recommended Action</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="alertsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ SCENARIO LAB ═══════════ -->
+        <section class="page" id="page-scenario-lab">
+          <div class="page-header">
+            <div>
+              <h2>Scenario Lab</h2>
+              <p class="page-sub">Model what-if scenarios and compare demand outcomes</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="glass-btn" id="scenarioResetBtn"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+              <button class="help-btn" onclick="showHelp('scenario-lab')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="scenario-layout">
+            <!-- Controls -->
+            <div class="glass-card forecast-controls scenario-controls" style="padding:18px">
+              <h3 class="ctrl-title"><i class="fa-solid fa-flask"></i> Scenario Controls</h3>
+              <div class="form-group">
+                <label>Product</label>
+                <select class="glass-select" id="scenarioProduct">
+                  <option value="">Loading products...</option>
+                </select>
+              </div>
+              <div
+                style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin:8px 0">
+                <div
+                  style="font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">
+                  BASELINE — READ ONLY</div>
+                <div class="scenario-input-group">
+                  <span class="scenario-input-label">Demand Change %</span>
+                  <input type="range" class="glass-range" id="scDemandA" min="-50" max="100" step="5" value="0" disabled
+                    style="flex:1" />
+                  <span class="scenario-input-val" id="scDemandAVal">0%</span>
+                </div>
+                <div class="scenario-input-group">
+                  <span class="scenario-input-label">Price Change %</span>
+                  <input type="range" class="glass-range" id="scPriceA" min="-30" max="50" step="5" value="0" disabled
+                    style="flex:1" />
+                  <span class="scenario-input-val" id="scPriceAVal">0%</span>
+                </div>
+                <div class="scenario-input-group">
+                  <span class="scenario-input-label">Inventory Change %</span>
+                  <input type="range" class="glass-range" id="scInventoryA" min="-50" max="100" step="5" value="0"
+                    disabled style="flex:1" />
+                  <span class="scenario-input-val" id="scInventoryAVal">0%</span>
+                </div>
+                <div class="scenario-input-group">
+                  <span class="scenario-input-label">Lead Time (days)</span>
+                  <input type="range" class="glass-range" id="scLeadA" min="1" max="30" step="1" value="7" disabled
+                    style="flex:1" />
+                  <span class="scenario-input-val" id="scLeadAVal">7d</span>
+                </div>
+              </div>
+              <div
+                style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin:8px 0">
+                <div
+                  style="font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">
+                  Scenario B</div>
+                <div class="scenario-input-group">
+                  <span class="scenario-input-label">Demand Change %</span>
+                  <input type="range" class="glass-range" id="scDemandB" min="-50" max="100" step="5" value="20"
+                    style="flex:1" />
+                  <span class="scenario-input-val" id="scDemandBVal">+20%</span>
+                </div>
+                <div class="scenario-input-group">
+                  <span class="scenario-input-label">Price Change %</span>
+                  <input type="range" class="glass-range" id="scPriceB" min="-30" max="50" step="5" value="-10"
+                    style="flex:1" />
+                  <span class="scenario-input-val" id="scPriceBVal">-10%</span>
+                </div>
+                <div class="scenario-input-group">
+                  <span class="scenario-input-label">Inventory Change %</span>
+                  <input type="range" class="glass-range" id="scInventoryB" min="-50" max="100" step="5" value="30"
+                    style="flex:1" />
+                  <span class="scenario-input-val" id="scInventoryBVal">+30%</span>
+                </div>
+                <div class="scenario-input-group">
+                  <span class="scenario-input-label">Lead Time (days)</span>
+                  <input type="range" class="glass-range" id="scLeadB" min="1" max="30" step="1" value="14"
+                    style="flex:1" />
+                  <span class="scenario-input-val" id="scLeadBVal">14d</span>
+                </div>
+              </div>
+              <button class="predict-btn" id="runScenarioBtn">
+                <span class="predict-inner"><i class="fa-solid fa-flask"></i><span>Run Simulation</span></span>
+                <div class="predict-glow"></div>
+              </button>
+              <div style="display:flex;gap:8px;margin-top:10px">
+                <button class="glass-btn" id="saveScenarioBtn" style="flex:1"><i class="fa-solid fa-floppy-disk"></i>
+                  Save</button>
+                <button class="glass-btn" id="loadScenariosBtn" style="flex:1"><i class="fa-solid fa-folder-open"></i>
+                  Saved</button>
+              </div>
+              <div id="savedScenariosList" style="margin-top:10px"></div>
+            </div>
+            <!-- Results -->
+            <div>
+              <div id="scenarioResults">
+                <div class="empty-state">
+                  <i class="fa-solid fa-flask"></i>
+                  <h3>Ready to simulate</h3>
+                  <p>Select a product, adjust scenario parameters and click Run Simulation</p>
+                </div>
+              </div>
+              <div class="glass-card chart-card" style="margin-top:16px;display:none" id="scenarioChartCard">
+                <div class="chart-card-header"><span class="chart-title">Scenario Comparison</span></div>
+                <canvas id="scenarioChart" style="max-height:280px"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ COPILOT ═══════════ -->
+        <section class="page" id="page-copilot">
+          <div class="page-header">
+            <div>
+              <h2>ForecastIQ Copilot</h2>
+              <p class="page-sub">Ask anything about your demand, inventory and forecasts</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="glass-btn" id="clearCopilot"><i class="fa-solid fa-trash"></i> Clear</button>
+              <button class="help-btn" onclick="showHelp('copilot')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="copilot-layout">
+            <div class="copilot-messages" id="copilot-messages">
+              <div class="chat-msg bot">
+                <div class="chat-avatar bot"><i class="fa-solid fa-chart-line"></i></div>
+                <div>
+                  <div class="chat-bubble">
+                    Hello! I'm ForecastIQ Copilot. I can help you understand demand trends, analyse inventory risks,
+                    interpret model predictions, and guide you through the platform. What would you like to know?
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="suggested-chips" id="suggestedChips">
+              <span class="suggested-chip" onclick="copilotSuggest(this)">Which products are at risk of stockout?</span>
+              <span class="suggested-chip" onclick="copilotSuggest(this)">What is the forecast confidence for Laptop Pro
+                X1?</span>
+              <span class="suggested-chip" onclick="copilotSuggest(this)">Show me the best performing model</span>
+              <span class="suggested-chip" onclick="copilotSuggest(this)">Which SKUs need immediate reorder?</span>
+              <span class="suggested-chip" onclick="copilotSuggest(this)">Explain the feature importance</span>
+            </div>
+            <div class="copilot-input-row">
+              <input type="text" class="copilot-input" id="copilotInput"
+                placeholder="Ask anything about your demand data..." />
+              <button class="copilot-send" id="copilotSend"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ ACTION CENTER ═══════════ -->
+        <section class="page" id="page-action-center">
+          <div class="page-header">
+            <div>
+              <h2>AI Action Center</h2>
+              <p class="page-sub">Review and act on AI-generated inventory recommendations</p>
+            </div>
+            <div class="page-header-actions">
+              <span id="actionCenterCount" style="font-size:0.82rem;font-weight:700;color:var(--text-muted)"></span>
+              <button class="glass-btn" onclick="initActionCenter()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+              <button class="help-btn" onclick="showHelp('action-center')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="filters-bar" style="margin-bottom:16px">
+            <div class="filter-tabs" id="actionFilterTabs">
+              <button class="filter-tab active" data-filter="all">All</button>
+              <button class="filter-tab" data-filter="critical">Critical</button>
+              <button class="filter-tab" data-filter="high">High</button>
+              <button class="filter-tab" data-filter="medium">Medium</button>
+              <button class="filter-tab" data-filter="low">Low</button>
+            </div>
+          </div>
+          <div id="actionCardsList"></div>
+          <div style="margin-top:24px">
+            <div class="dash-actions-title" style="margin-bottom:12px"><i class="fa-solid fa-clock-rotate-left"
+                style="color:#6b7280"></i> Recent Decisions</div>
+            <div class="glass-card table-card">
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Product</th>
+                      <th>Recommendation</th>
+                      <th>Decision</th>
+                      <th>By</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentDecisionsBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ MODEL LAB ═══════════ -->
+        <section class="page" id="page-model-lab">
+          <div class="page-header">
+            <div>
+              <h2>Model Lab</h2>
+              <p class="page-sub">Compare ML models, inspect metrics and feature importance</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="glass-btn" onclick="initModelLab()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+              <button class="help-btn" onclick="showHelp('model-lab')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <!-- Model comparison table -->
+          <div class="glass-card table-card" style="margin-bottom:18px">
+            <div class="table-header"><span class="chart-title">Model Performance Comparison</span></div>
+            <div class="table-wrapper">
+              <table class="model-table">
+                <thead>
+                  <tr>
+                    <th>Model</th>
+                    <th>MAE</th>
+                    <th>RMSE</th>
+                    <th>MAPE</th>
+                    <th>R²</th>
+                    <th>Bias</th>
+                    <th>Train</th>
+                    <th>Test</th>
+                    <th>Time (s)</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="modelTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="glass-card"
+            style="margin-bottom:18px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div><strong>Active Model</strong>
+              <div id="activeModelLabel" style="color:var(--text-muted);font-size:.8rem;margin-top:4px">Loading...</div>
+            </div>
+            <button class="glass-btn" id="useRecommendedModelBtn"><i class="fa-solid fa-trophy"></i> Use Recommended
+              Model</button>
+          </div>
+          <!-- Feature importance + split info -->
+          <div class="charts-row">
+            <div class="glass-card chart-card">
+              <div class="chart-card-header"><span class="chart-title">Feature Importance</span><span
+                  class="chart-sub">Best model</span></div>
+              <div id="featureImportanceBars"></div>
+            </div>
+            <div class="glass-card chart-card">
+              <div class="chart-card-header"><span class="chart-title">Training / Test Split</span></div>
+              <div id="splitInfoCard" style="padding:8px"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ UPLOAD ═══════════ -->
+        <section class="page" id="page-upload">
+          <div class="page-header">
+            <div>
+              <h2>Upload Dataset</h2>
+              <p class="page-sub">Import your CSV data for demand forecasting</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="help-btn" onclick="showHelp('upload')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="upload-layout">
+            <div class="glass-card upload-zone" id="dropZone">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p>Drag &amp; drop your CSV file here</p>
+              <span>or</span>
+              <label class="predict-btn" style="display:inline-flex;cursor:pointer;width:auto;padding:10px 24px"
+                for="fileInput">
+                <span class="predict-inner"><i class="fa-solid fa-folder-open"></i><span>Browse File</span></span>
+                <div class="predict-glow"></div>
+              </label>
+              <input type="file" id="fileInput" accept=".csv" hidden />
+              <p class="upload-hint">Required columns: sales, inventory, price, month, demand — Max 50MB</p>
+            </div>
+            <div style="display:flex;gap:12px">
+              <button class="predict-btn" id="btnValidate" style="flex:1">
+                <span class="predict-inner"><i class="fa-solid fa-check-circle"></i><span>Validate Data</span></span>
+                <div class="predict-glow"></div>
+              </button>
+              <button class="glass-btn" id="btnStartForecast" style="flex:1;opacity:0.5" disabled><i
+                  class="fa-solid fa-play"></i> Start
+                Forecast</button>
+            </div>
+            <div class="validation-msg" id="validationMsg"></div>
+            <div class="glass-card table-card" id="previewSection" style="display:none">
+              <div class="table-header"><span class="chart-title">Dataset Preview</span></div>
+              <div class="table-wrapper" id="previewTableWrap"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ ANALYTICS ═══════════ -->
+        <section class="page" id="page-analytics">
+          <div class="page-header">
+            <div>
+              <h2>Analytics</h2>
+              <p class="page-sub">Deep demand insights and trend analysis</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="help-btn" onclick="showHelp('analytics')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="filters-bar">
+            <select class="glass-select sm" id="analyticsProduct">
+              <option>All Products</option>
+            </select>
+            <input type="date" class="glass-input" id="dateFrom" />
+            <span style="color:#475569">to</span>
+            <input type="date" class="glass-input" id="dateTo" />
+            <select class="glass-select sm" id="analyticsRegion">
+              <option>All Regions</option>
+            </select>
+            <select class="glass-select sm" id="analyticsGranularity">
+              <option value="monthly">Monthly</option>
+              <option value="weekly">Weekly</option>
+            </select>
+            <button class="glass-btn-sm" id="applyAnalyticsFilters"><i class="fa-solid fa-filter"></i> Apply</button>
+          </div>
+          <div class="charts-row">
+            <div class="glass-card chart-card wide">
+              <div class="chart-card-header"><span class="chart-title">Product Demand Trends</span></div>
+              <canvas id="analyticsLineChart"></canvas>
+            </div>
+            <div class="glass-card chart-card">
+              <div class="chart-card-header"><span class="chart-title">Seasonal Analysis</span></div>
+              <canvas id="seasonalChart"></canvas>
+            </div>
+          </div>
+          <div class="charts-row">
+            <div class="glass-card chart-card">
+              <div class="chart-card-header"><span class="chart-title">Category Comparison</span></div>
+              <canvas id="demandCompareChart"></canvas>
+            </div>
+            <div class="glass-card chart-card wide">
+              <div class="chart-card-header"><span class="chart-title">Correlation Heatmap</span></div>
+              <div id="heatmapContainer" class="heatmap-container"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ REPORTS ═══════════ -->
+        <section class="page" id="page-reports">
+          <div class="page-header">
+            <div>
+              <h2>Reports</h2>
+              <p class="page-sub">Export and manage forecasting reports</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="help-btn" onclick="showHelp('reports')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="report-actions">
+            <button class="predict-btn" style="width:auto" id="exportReportsCsv">
+              <span class="predict-inner"><i class="fa-solid fa-file-csv"></i><span>Export CSV</span></span>
+              <div class="predict-glow"></div>
+            </button>
+            <button class="glass-btn" id="exportReportsCharts"><i class="fa-solid fa-image"></i>
+              Export Charts</button>
+            <button class="glass-btn" id="printReports"><i class="fa-solid fa-file-pdf"></i>
+              Generate PDF</button>
+          </div>
+          <div class="glass-card table-card">
+            <div class="table-header"><span class="chart-title">Report History</span></div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Report Name</th>
+                    <th>Type</th>
+                    <th>Generated</th>
+                    <th>Size</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="reportsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ AUDIT LOG ═══════════ -->
+        <section class="page" id="page-audit">
+          <div class="page-header">
+            <div>
+              <h2>Audit Log</h2>
+              <p class="page-sub">Complete history of AI recommendations and human decisions</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="glass-btn" onclick="initAudit()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+              <button class="help-btn" onclick="showHelp('audit')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="filters-bar" style="margin-bottom:16px">
+            <div class="filter-tabs" id="auditFilterTabs">
+              <button class="filter-tab active" data-filter="all">All</button>
+              <button class="filter-tab" data-filter="approved">Approved</button>
+              <button class="filter-tab" data-filter="rejected">Rejected</button>
+              <button class="filter-tab" data-filter="snoozed">Snoozed</button>
+              <button class="filter-tab" data-filter="pending">Pending</button>
+            </div>
+          </div>
+          <div class="glass-card table-card">
+            <div class="table-header"><span class="chart-title">Decision History</span><span id="auditCount"
+                style="font-size:0.75rem;color:var(--text-muted)"></span></div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Product</th>
+                    <th>Action</th>
+                    <th>Decision</th>
+                    <th>Model</th>
+                    <th>Confidence</th>
+                    <th>Reason</th>
+                  </tr>
+                </thead>
+                <tbody id="auditTableBody"></tbody>
+              </table>
+            </div>
+            <div class="pagination" id="auditPagination"></div>
+          </div>
+        </section>
+
+        <!-- ═══════════ DATA QUALITY ═══════════ -->
+        <section class="page" id="page-data-quality">
+          <div class="page-header">
+            <div>
+              <h2>Data Quality</h2>
+              <p class="page-sub">Analyse your dataset for missing values, outliers and anomalies</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="predict-btn" style="width:auto" id="runDQBtn">
+                <span class="predict-inner"><i class="fa-solid fa-shield-check"></i><span>Run Quality
+                    Check</span></span>
+                <div class="predict-glow"></div>
+              </button>
+              <button class="help-btn" onclick="showHelp('data-quality')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="dq-layout">
+            <div class="glass-card" style="padding:20px;text-align:center">
+              <div class="quality-score-ring" id="dqScoreRing">
+                <span class="quality-score-val" id="dqScoreVal">—</span>
+                <span class="quality-score-label">Score</span>
+              </div>
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px" id="dqRowsInfo"></div>
+              <div style="font-size:0.75rem;color:var(--text-muted)" id="dqColsInfo"></div>
+              <div style="margin-top:12px">
+                <label class="glass-card upload-zone"
+                  style="padding:16px;cursor:pointer;display:block;border-style:dashed;border-width:1.5px;font-size:0.78rem"
+                  for="dqFileInput">
+                  <i class="fa-solid fa-upload"
+                    style="font-size:1.2rem;display:block;margin-bottom:4px;color:var(--accent)"></i>
+                  Upload CSV to analyse
+                </label>
+                <input type="file" id="dqFileInput" accept=".csv" hidden />
+              </div>
+            </div>
+            <div>
+              <div class="dq-summary-cards" id="dqSummaryCards">
+                <div class="dq-summary-card">
+                  <div class="dq-summary-val" id="dqMissing">—</div>
+                  <div class="dq-summary-lbl">Missing Values</div>
+                </div>
+                <div class="dq-summary-card">
+                  <div class="dq-summary-val" id="dqDuplicates">—</div>
+                  <div class="dq-summary-lbl">Duplicates</div>
+                </div>
+                <div class="dq-summary-card">
+                  <div class="dq-summary-val" id="dqOutliers">—</div>
+                  <div class="dq-summary-lbl">Outliers</div>
+                </div>
+              </div>
+              <div class="chart-title" style="margin-bottom:10px">Issues Found</div>
+              <div id="dqIssuesList">
+                <div class="empty-state"><i class="fa-solid fa-shield-check"></i>
+                  <h3>No analysis yet</h3>
+                  <p>Click "Run Quality Check" to analyse the default dataset, or upload a CSV file first</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ SETTINGS ═══════════ -->
+        <section class="page" id="page-settings">
+          <div class="page-header">
+            <div>
+              <h2>Settings</h2>
+              <p class="page-sub">Configure system preferences</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="help-btn" onclick="showHelp('settings')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="settings-grid">
+            <div class="glass-card settings-card">
+              <h3 class="ctrl-title"><i class="fa-solid fa-palette"></i> Appearance</h3>
+              <div class="setting-row"><span>Dark Mode</span><label class="toggle-switch"><input type="checkbox"
+                    id="settingsDarkMode" /><span class="toggle-slider"></span></label></div>
+              <div class="setting-row"><span>Compact Sidebar</span><label class="toggle-switch"><input type="checkbox"
+                    id="compactSidebar" /><span class="toggle-slider"></span></label></div>
+            </div>
+            <div class="glass-card settings-card">
+              <h3 class="ctrl-title"><i class="fa-solid fa-robot"></i> Model Settings</h3>
+              <div class="form-group"><label>Default Model</label>
+                <select class="glass-select">
+                  <option>Random Forest</option>
+                  <option>Linear Regression</option>
+                  <option>Gradient Boosting</option>
+                  <option>Ensemble</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Confidence Threshold</label><input type="range" class="glass-range"
+                  min="80" max="99" value="94" /></div>
+            </div>
+            <div class="glass-card settings-card">
+              <h3 class="ctrl-title"><i class="fa-solid fa-bell"></i> Notifications</h3>
+              <div class="setting-row"><span>Email Alerts</span><label class="toggle-switch"><input type="checkbox"
+                    checked /><span class="toggle-slider"></span></label></div>
+              <div class="setting-row"><span>Low Stock Alerts</span><label class="toggle-switch"><input type="checkbox"
+                    checked /><span class="toggle-slider"></span></label></div>
+              <div class="setting-row"><span>Forecast Ready</span><label class="toggle-switch"><input
+                    type="checkbox" /><span class="toggle-slider"></span></label></div>
+            </div>
+            <div class="glass-card settings-card">
+              <h3 class="ctrl-title"><i class="fa-solid fa-plug"></i> API Configuration</h3>
+              <div class="form-group"><label>Backend URL</label><input type="text" class="glass-input"
+                  value="http://localhost:4000" id="settingsApiUrl" /></div>
+              <button class="glass-btn" style="margin-top:8px" onclick="testApiConnection()"><i
+                  class="fa-solid fa-plug"></i> Test Connection</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════ ML PAGE (kept from v2) ═══════════ -->
+        <section class="page" id="page-ml">
+          <div class="page-header">
+            <div>
+              <h2>ML Demand Prediction</h2>
+              <p class="page-sub">Train and compare demand models on the active dataset</p>
+            </div>
+            <div class="page-header-actions">
+              <button class="help-btn" onclick="showHelp('ml')"><i class="fa-solid fa-circle-question"></i>
+                Help</button>
+            </div>
+          </div>
+          <div class="ml-layout">
+            <div class="glass-card ml-controls">
+              <h3 class="ctrl-title"><i class="fa-solid fa-table"></i> Training Dataset</h3>
+              <div class="form-group"><label>Dataset</label><select class="glass-select" id="mlDatasetSelect">
+                  <option value="">Default dataset</option>
+                </select></div>
+              <div class="form-group"><label>Target column</label><select class="glass-select"
+                  id="mlTargetSelect"></select></div>
+              <div class="form-group"><label>Feature columns</label>
+                <div id="mlFeatureSelect" class="ml-feature-select">Loading columns...</div>
+              </div>
+              <p style="font-size:0.75rem;color:#475569;margin-bottom:10px">Train each algorithm on a chronological test
+                split.</p>
+              <div class="table-wrapper" style="max-height:260px;overflow-y:auto;margin-bottom:10px">
+                <table id="mlDataTable">
+                  <thead>
+                    <tr>
+                      <th>Feature X</th>
+                      <th>Target Y</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="mlDataBody"></tbody>
+                </table>
+              </div>
+              <button class="glass-btn-sm" id="mlAddRow" style="margin-bottom:16px"><i class="fa-solid fa-plus"></i> Add
+                Row</button>
+              <div class="form-group">
+                <label>Predict next <span id="mlDaysLabel">5</span> days</label>
+                <input type="range" class="glass-range" id="mlDaysSlider" min="1" max="14" value="5" />
+              </div>
+              <div style="display:flex;gap:12px;margin-top:10px">
+                <button class="predict-btn" id="mlLinearBtn" style="flex:1">
+                  <span class="predict-inner"><i class="fa-solid fa-chart-line"></i><span>Linear
+                      Regression</span></span>
+                  <div class="predict-glow"></div>
+                </button>
+                <button class="predict-btn" id="mlForestBtn" style="flex:1">
+                  <span class="predict-inner"><i class="fa-solid fa-tree"></i><span>Random Forest</span></span>
+                  <div class="predict-glow"></div>
+                </button>
+              </div>
+              <div class="ml-metrics" id="mlMetrics" style="display:none">
+                <div class="ml-metric"><span class="ml-metric-label">Selected Model</span><span class="ml-metric-val"
+                    id="mlSlope">—</span></div>
+                <div class="ml-metric"><span class="ml-metric-label">Split</span><span class="ml-metric-val"
+                    id="mlIntercept">—</span></div>
+                <div class="ml-metric"><span class="ml-metric-label">MAE</span><span class="ml-metric-val"
+                    id="mlMae">—</span></div>
+                <div class="ml-metric"><span class="ml-metric-label">RMSE</span><span class="ml-metric-val"
+                    id="mlRmse">—</span></div>
+                <div class="ml-metric"><span class="ml-metric-label">MSE</span><span class="ml-metric-val"
+                    id="mlMse">—</span></div>
+                <div class="ml-metric"><span class="ml-metric-label">R² Score</span><span class="ml-metric-val"
+                    id="mlR2">—</span></div>
+              </div>
+              <div id="mlComparison" style="display:none;margin-top:14px"></div>
+            </div>
+            <div class="ml-output">
+              <div class="glass-card chart-card" style="margin-bottom:16px">
+                <div class="chart-card-header">
+                  <span class="chart-title">Actual Demand vs Model Prediction</span>
+                  <span class="ai-badge" id="mlModelBadge" style="display:none">Linear Regression</span>
+                </div>
+                <canvas id="mlChart" style="max-height:300px;display:none"></canvas>
+                <div id="mlChartEmpty" class="empty-state" style="padding:32px">No prediction data available. Run a
+                  model to evaluate the active dataset.</div>
+              </div>
+              <div class="glass-card table-card" id="mlResultsCard" style="display:none">
+                <div class="table-header"><span class="chart-title">Chronological Test Predictions</span><span
+                    class="ai-badge">AI Forecast</span></div>
+                <div class="table-wrapper">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Test Observation</th>
+                        <th>Predicted Demand</th>
+                        <th>Actual Demand</th>
+                        <th>Error</th>
+                        <th>Trend</th>
+                      </tr>
+                    </thead>
+                    <tbody id="mlResultsBody"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="ml-success" id="mlSuccess" style="display:none">
+                <i class="fa-solid fa-circle-check"></i><span id="mlSuccessMsg"></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- AI LOADING OVERLAY -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="ai-loader">
+      <div class="ai-core"><i class="fa-solid fa-chart-line"></i></div>
+    </div>
+    <p class="ai-loading-text">Preparing intelligence<span class="blink">...</span></p>
+    <ol class="loading-steps" aria-label="Processing steps">
+      <li class="current">Preparing Dataset</li>
+      <li>Preprocessing</li>
+      <li>Training Model</li>
+      <li>Evaluating Model</li>
+      <li>Generating Prediction</li>
+    </ol>
+  </div>
+
+  <!-- HELP MODAL -->
+  <div class="help-modal-overlay" id="helpModalOverlay" onclick="closeHelp(event)">
+    <div class="help-modal" id="helpModal">
+      <div class="help-modal-header">
+        <div class="help-modal-title" id="helpModalTitle"><i class="fa-solid fa-circle-question"></i> Help</div>
+        <button class="help-modal-close"
+          onclick="document.getElementById('helpModalOverlay').classList.remove('show')"><i
+            class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="help-modal-body" id="helpModalBody"></div>
+    </div>
+  </div>
+
+  <!-- EXPLAIN MODAL -->
+  <div class="explain-modal-overlay" id="explainModalOverlay" onclick="closeExplainModal(event)">
+    <div class="explain-modal" id="explainModal">
+      <div class="explain-modal-header">
+        <div class="help-modal-title" id="explainModalTitle"><i class="fa-solid fa-magnifying-glass-chart"></i>
+          Explanation</div>
+        <button class="help-modal-close"
+          onclick="document.getElementById('explainModalOverlay').classList.remove('show')"><i
+            class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="explain-modal-body" id="explainModalBody"></div>
+    </div>
+  </div>
+
+  <!-- PURCHASE ORDER MODAL -->
+  <div class="purchase-order-modal-overlay" id="purchaseOrderModal"
+    onclick="if(event.target === this) closePurchaseOrderModal()">
+    <div class="purchase-order-modal" role="dialog" aria-modal="true" aria-labelledby="poModalTitle">
+      <div class="help-modal-header">
+        <div class="help-modal-title" id="poModalTitle"><i class="fa-solid fa-file-signature"></i> Create Purchase Order
+        </div>
+        <button class="help-modal-close" type="button" onclick="closePurchaseOrderModal()" aria-label="Close"><i
+            class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="purchase-order-modal-body">
+        <div class="po-request-summary"><span>Product</span><strong id="poProduct">—</strong></div>
+        <div class="form-group">
+          <label for="poSupplierSelect">Supplier</label>
+          <select class="glass-select" id="poSupplierSelect">
+            <option value="">Select Supplier</option>
+          </select>
+          <div class="po-supplier-details" id="poSupplierDetails"></div>
+          <div class="po-form-message" id="poSupplierMessage" role="alert"></div>
+        </div>
+        <div class="po-form-grid">
+          <div class="form-group"><label for="poQuantity">Quantity</label><input class="glass-input" id="poQuantity"
+              type="number" min="1" step="1" required /></div>
+          <div class="form-group"><label for="poUnitPrice">Unit Price</label><input class="glass-input" id="poUnitPrice"
+              type="number" min="0" step="0.01" required /></div>
+          <div class="form-group"><label for="poExpectedDelivery">Expected Delivery</label><input class="glass-input"
+              id="poExpectedDelivery" type="date" required /></div>
+        </div>
+        <div class="po-modal-actions"><button class="glass-btn" type="button"
+            onclick="closePurchaseOrderModal()">Cancel</button><button class="predict-btn" type="button"
+            id="poSubmitBtn" disabled>Create Purchase Order</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="purchase-order-modal-overlay" id="purchaseOrderStatusModal"
+    onclick="if(event.target === this) closePurchaseOrderStatusModal()">
+    <div class="purchase-order-modal" role="dialog" aria-modal="true" aria-labelledby="poStatusTitle">
+      <div class="help-modal-header">
+        <div class="help-modal-title" id="poStatusTitle"><i class="fa-solid fa-arrows-rotate"></i> Update Purchase Order
+          Status</div><button class="help-modal-close" type="button" onclick="closePurchaseOrderStatusModal()"
+          aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="purchase-order-modal-body">
+        <div class="po-request-summary"><span>Purchase Order</span><strong id="poStatusNumber">—</strong></div>
+        <div class="form-group"><label for="poStatusSelect">New Status</label><select class="glass-select"
+            id="poStatusSelect"></select>
+          <div class="po-form-message" id="poStatusMessage" role="alert"></div>
+        </div>
+        <div class="po-modal-actions"><button class="glass-btn" type="button"
+            onclick="closePurchaseOrderStatusModal()">Cancel</button><button class="predict-btn" type="button"
+            id="poStatusSubmitBtn">Update Status</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js?v=20260824-status4"></script>
+  <script>
+    /* Particles */
+    (function () {
+      const c = document.getElementById('particleCanvas'), ctx = c.getContext('2d');
+      let W, H, pts = [];
+      function resize() { W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
+      resize(); window.addEventListener('resize', resize);
+      function P() { this.x = Math.random() * W; this.y = Math.random() * H; this.r = Math.random() * 1.5 + 0.3; this.vx = (Math.random() - .5) * .2; this.vy = (Math.random() - .5) * .2; this.a = Math.random() * .35 + .05; }
+      for (let i = 0; i < 80; i++) pts.push(new P());
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        pts.forEach(p => {
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+          if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(100,116,139,${p.a})`; ctx.fill();
+        });
+        for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 110) {
+            ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.strokeStyle = `rgba(100,116,139,${.06 * (1 - d / 110)})`; ctx.lineWidth = .4; ctx.stroke();
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    /* Live clock */
+    function tick() {
+      const n = new Date(), p = v => String(v).padStart(2, '0');
+      document.getElementById('liveClock').textContent = `${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+    }
+    tick(); setInterval(tick, 1000);
+
+    /* Ripple on predict buttons */
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.predict-btn');
+      if (!btn) return;
+      const r = document.createElement('span'); r.className = 'ripple';
+      const rect = btn.getBoundingClientRect(), sz = Math.max(rect.width, rect.height);
+      r.style.cssText = `width:${sz}px;height:${sz}px;left:${e.clientX - rect.left - sz / 2}px;top:${e.clientY - rect.top - sz / 2}px`;
+      btn.appendChild(r); setTimeout(() => r.remove(), 700);
+    });
+
+  </script>
+</body>
+
+</html>
