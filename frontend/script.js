@@ -48,7 +48,7 @@ function showToast(msg) {
 }
 
 /* ── Loading overlay ── */
-function showLoading(ms = 1200) {
+function showLoading(ms = 0) {
   const o = document.getElementById('loadingOverlay');
   if (o) o.classList.add('show');
   return new Promise(res => setTimeout(() => { if (o) o.classList.remove('show'); res(); }, ms));
@@ -623,7 +623,7 @@ function buildDashRiskPie(products) {
       labels: ['Critical', 'High', 'Medium', 'Low'],
       datasets: [{ data: [counts.critical, counts.high, counts.medium, counts.low], backgroundColor: ['#dc2626', '#ea580c', '#d97706', '#059669'], borderWidth: 2, borderColor: '#ffffff' }]
     },
-    options: { responsive: true, maintainAspectRatio: true, animation: { duration: 1200 }, plugins: { legend: { position: 'bottom', labels: { color: '#6b7280', font: { size: 11 }, padding: 10 } }, tooltip: { backgroundColor: '#1e293b', titleColor: '#f1f5f9', bodyColor: '#94a3b8', cornerRadius: 8 } } }
+    options: { responsive: true, maintainAspectRatio: true, animation: { duration: 300 }, plugins: { legend: { position: 'bottom', labels: { color: '#6b7280', font: { size: 11 }, padding: 10 } }, tooltip: { backgroundColor: '#1e293b', titleColor: '#f1f5f9', bodyColor: '#94a3b8', cornerRadius: 8 } } }
   });
 }
 
@@ -2866,7 +2866,7 @@ async function runMlTraining(model) {
   if (chart) chart.style.display = 'none';
   if (empty) { empty.style.display = ''; empty.textContent = `Running ${model}...`; }
   try {
-    await showLoading(300);
+    await showLoading(0);
     const result = await apiFetch(`${API}/intelligence/ml-train`, { method: 'POST', body: JSON.stringify({ datasetId, target, features, model, testFraction: 0.25 }) });
     const modelResult = result.models?.[model];
     if (!modelResult) throw new Error(`No ${model} result returned.`);
@@ -3458,7 +3458,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (msg) { msg.className = 'validation-msg error'; msg.textContent = '✗ No file loaded. Please upload a CSV file first.'; }
       return;
     }
-    await showLoading(600);
+    await showLoading(0);
     const check = validateCSVStructure(uploadedCSVData);
 
     if (!check.ok) {
@@ -3543,7 +3543,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.getElementById('btnStartForecast');
     if (startBtn) { startBtn.disabled = true; startBtn.style.opacity = '0.6'; }
 
-    await showLoading(1400);
+    await showLoading(0);
     const rows = uploadedCSVData.rows;
 
     try {
